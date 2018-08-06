@@ -15,9 +15,6 @@ class ServerRequest {
 // MARK: - Properties
     var newsArray: [News] = []
     var isLoading = false
-  
-    // Private
-    private var dataTask: URLSessionDataTask?
     
 // MARK: - Enums
     enum Category: Int {
@@ -91,6 +88,8 @@ class ServerRequest {
         
         let url = URL(string: String(format: "https://newsapi.org/v2/top-headlines?country=%@%@&apiKey=39790fa530af49b2959970d6868f359c",language.rawValue, category.searchParameter))
         let session = URLSession.shared
+        var dataTask: URLSessionDataTask?
+        
         dataTask = session.dataTask(with: url!, completionHandler: {
             (data, response, error) in
             
