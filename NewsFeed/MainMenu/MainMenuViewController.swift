@@ -49,7 +49,7 @@ class MainMenuViewController: UIViewController {
         
         segmentedControl.setItems(ServerRequest.Category.all)
         segmentedControl.buttonMargin = 30
-        segmentedControl.buttonPadding = 40
+        segmentedControl.buttonSpacing = 40
         segmentedControl.font = UIFont(name: "Georgia", size: 15)
         segmentedControl.selectedSegmentIndex = UserDefaults.standard.integer(forKey: segmentedControlIndexKey)
         

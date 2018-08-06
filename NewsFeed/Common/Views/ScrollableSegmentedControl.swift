@@ -17,7 +17,7 @@ class ScrollableSegmentedControl: UIControl {
             setNeedsLayout()
         }
     }
-    open var buttonPadding: CGFloat = 15 {
+    open var buttonSpacing: CGFloat = 15 {
         didSet {
             setNeedsLayout()
         }
@@ -31,14 +31,16 @@ class ScrollableSegmentedControl: UIControl {
         didSet {
             highlightSelectedSegment()
             calculateAndSetScrollOffset()
-            
+      
             // deselect previous button if different button is tapped
             if oldValue != selectedSegmentIndex {
-                let previousButton = buttonsArray.filter{$0.tag == oldValue}.first
-                previousButton?.isSelected = false
-                UIButton.animate(withDuration: 0.3, animations: {
-                    previousButton?.transform = CGAffineTransform.identity
-                })
+                let button = buttonsArray.filter{$0.tag == oldValue}.first
+                if let previousButton = button {
+                    previousButton.isSelected = false
+                    UIButton.animate(withDuration: 0.3, animations: {
+                        previousButton.transform = CGAffineTransform.identity
+                    })
+                }
             }
         }
     }
@@ -53,8 +55,8 @@ class ScrollableSegmentedControl: UIControl {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         
-        scrollView.showsHorizontalScrollIndicator = false
-        addSubview(scrollView)
+        setUp()
+        drawSeparatorLine()
     }
     
     public init(items: [String]) {
@@ -62,9 +64,9 @@ class ScrollableSegmentedControl: UIControl {
         
         super.init(frame: CGRect.zero)
         
-        scrollView.showsHorizontalScrollIndicator = false
-        addSubview(scrollView)
+        setUp()
         createButtons()
+        drawSeparatorLine()
     }
     
     public func setItems(_ items: [String]) {
@@ -77,32 +79,39 @@ class ScrollableSegmentedControl: UIControl {
     override func layoutSubviews() {
         super.layoutSubviews()
         
-        scrollView.frame = CGRect(x: 0, y: 0, width: frame.size.width, height: frame.size.height)
+        scrollView.frame = bounds
         
         updateUI()
-        drawSeparatorLine()
         highlightSelectedSegment()
         calculateAndSetScrollOffset()
     }
     
     // Action methods
     @objc private func buttonTapped(_ sender: UIButton) {
-        let previousButton = buttonsArray.filter{$0.tag == selectedSegmentIndex}.first
+        let button = buttonsArray.filter{$0.tag == selectedSegmentIndex}.first
         
         selectedSegmentIndex = sender.tag
         
-        if previousButton?.tag != sender.tag {
-            sendActions(for: .valueChanged)
-            previousButton?.isSelected = false
-            UIButton.animate(withDuration: 0.3, animations: {
-                previousButton?.transform = CGAffineTransform.identity
-            })
+        if let previousButton = button {
+            if previousButton.tag != sender.tag {
+                sendActions(for: .valueChanged)
+                previousButton.isSelected = false
+                UIButton.animate(withDuration: 0.3, animations: {
+                    previousButton.transform = CGAffineTransform.identity
+                })
+            }
         }
- 
+        
         sender.isSelected = true
     }
     
-// Private
+    // Private
+    // Set up
+    private func setUp() {
+        scrollView.showsHorizontalScrollIndicator = false
+        addSubview(scrollView)
+    }
+    
     // Create buttons
     private func createButtons() {
         for button in buttonsArray {
@@ -110,9 +119,7 @@ class ScrollableSegmentedControl: UIControl {
         }
         buttonsArray.removeAll()
         
-        var buttonTag: Int = 0
-        
-        for title in buttonTitles {
+        for (index, title) in buttonTitles.enumerated() {
             let button = UIButton(type: .custom)
         
             button.setTitleColor(UIColor.lightGray, for: .normal)
@@ -120,16 +127,15 @@ class ScrollableSegmentedControl: UIControl {
             button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
             button.setTitle(title, for: .normal)
             
-            button.tag = buttonTag
-            
-            buttonTag += 1
+            button.tag = index
             
             buttonsArray.append(button)
+            
+            scrollView.addSubview(button)
         }
     }
     
     private func updateUI() {
-        var numberOfPaddings: CGFloat = -1
         var buttonX: CGFloat = buttonMargin
         var contentSizeWidth: CGFloat = 0
         
@@ -141,42 +147,29 @@ class ScrollableSegmentedControl: UIControl {
             let buttonSize = calculateButtonSize(title: (button.titleLabel?.text)!, fontAttributes: [NSAttributedStringKey.font: font!])
             
             button.frame = CGRect(x: buttonX,
-                                  y: (frame.size.height - buttonSize.height) / 2,
+                                  y: 0,
                                   width: buttonSize.width,
-                                  height: buttonSize.height)
+                                  height: scrollView.frame.size.height)
             
-            buttonX += button.frame.size.width + buttonPadding
-            
-            scrollView.addSubview(button)
-            
-            numberOfPaddings += 1
+            buttonX += button.frame.size.width + buttonSpacing
             
             contentSizeWidth += button.frame.size.width
         }
         
-        scrollView.contentSize.width = contentSizeWidth + (buttonPadding * (CGFloat(buttonsArray.count) - 1)) + (2 * buttonMargin)
+        scrollView.contentSize.width = buttonX
     }
     
     func calculateButtonSize(title: String, fontAttributes: [NSAttributedStringKey : Any]) -> CGSize {
-        let buttonSize = CGSize(width: (title.size(withAttributes: fontAttributes).width),
-                                height: (title.size(withAttributes: fontAttributes).height))
-        return buttonSize
+        return title.size(withAttributes: fontAttributes)
     }
     
     // Draw separator line
     private func drawSeparatorLine() {
         let separatorHeight: CGFloat = 1
-        let separatorWidth: CGFloat
-        
-        if scrollView.contentSize.width <= frame.size.width {
-            separatorWidth = frame.size.width
-        } else {
-            separatorWidth = scrollView.contentSize.width
-        }
- 
+
         let separator = UIView(frame: CGRect(x: 0,
                                              y: frame.size.height - separatorHeight,
-                                             width: separatorWidth,
+                                             width: frame.size.width,
                                              height: separatorHeight))
         
         separator.backgroundColor = UIColor.lightGray
@@ -185,16 +178,16 @@ class ScrollableSegmentedControl: UIControl {
     }
     
     private func highlightSelectedSegment() {
-        let selectedSegment = buttonsArray.filter{$0.tag == selectedSegmentIndex}.first
+        let segment = buttonsArray.filter{$0.tag == selectedSegmentIndex}.first
 
-        selectedSegment?.isSelected = true
-        UIButton.animate(withDuration: 0.3, animations: {
-            selectedSegment?.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
-        })
+        if let selectedSegment = segment {
+            selectedSegment.isSelected = true
+            UIButton.animate(withDuration: 0.3, animations: {
+                selectedSegment.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
+            })
+        }
     }
-    
-    // MARK: - TODO make selected segment index optional - if user wants to set it to 0, app crashes because there is no selected button(line 191)
-    
+
     private func calculateAndSetScrollOffset() {
         var scrollOffset: CGFloat = 0
         let selectedButton: UIButton? = buttonsArray.filter{$0.tag == selectedSegmentIndex}.first
