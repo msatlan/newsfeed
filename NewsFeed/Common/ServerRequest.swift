@@ -15,32 +15,52 @@ class ServerRequest {
 // MARK: - Properties
     var newsArray: [News] = []
     var isLoading = false
+  
+    // Private
+    private var dataTask: URLSessionDataTask?
     
+// MARK: - Enums
     enum Category: Int {
         case topArticles            = 0
         case businessArticles       = 1
         case entertainmentArticles  = 2
-        case scienceArticles        = 3
-        case sportsArticles         = 4
+        case healthArticles         = 3
+        case scienceArticles        = 4
+        case sportsArticles         = 5
+        case technologyArticles     = 6
         
         var searchParameter: String {
             switch self {
             case .topArticles:              return ""
             case .businessArticles:         return "&category=business"
             case .entertainmentArticles:    return "&category=entertainment"
+            case .healthArticles:           return "&category=health"
             case .scienceArticles:          return "&category=science"
             case .sportsArticles:           return "&category=sports"
+            case .technologyArticles:       return "&category=technology"
             }
         }
         
         var string: String {
             switch self {
             case .topArticles:              return "Top Articles"
-            case .businessArticles:         return "Business Articles"
-            case .entertainmentArticles:    return "Entertainment Articles"
-            case .scienceArticles:          return "Science Articles"
-            case .sportsArticles:           return "Sports Articles"
+            case .businessArticles:         return "Business"
+            case .entertainmentArticles:    return "Entertainment"
+            case .healthArticles:           return "Health"
+            case .scienceArticles:          return "Science"
+            case .sportsArticles:           return "Sports"
+            case .technologyArticles:       return "Technology"
             }
+        }
+        
+        static var all: [String] {
+            return [Category.topArticles.string,
+                    Category.businessArticles.string,
+                    Category.entertainmentArticles.string,
+                    Category.healthArticles.string,
+                    Category.scienceArticles.string,
+                    Category.sportsArticles.string,
+                    Category.technologyArticles.string]
         }
     }
     
@@ -63,9 +83,6 @@ class ServerRequest {
             }
         }
     }
-
-    // Private
-    private var dataTask: URLSessionDataTask?
     
 // MARK: - Methods
     func performRequest(with language: Language, and category: Category, completion: @escaping ResponseSuccessfull) {

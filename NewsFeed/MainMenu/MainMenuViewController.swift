@@ -21,14 +21,15 @@ class MainMenuViewController: UIViewController {
     let segmentedControlIndexKey = "SegmentedControlIndex"
     let languageKey = "Language"
     
-    
 // MARK: - @IBOutlets
-    @IBOutlet weak var segmentedControl: UISegmentedControl!
+    //@IBOutlet weak var segmentedControl: ScrollableSegmentedControl!
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var button: CustomButton!
-    
+    @IBOutlet weak var segmentedControl: ScrollableSegmentedControl!
+
 // MARK: - @IBAction
-    @IBAction func valueChanged(_ sender: UISegmentedControl) {
+    
+    @IBAction func valueChanged(_ sender: ScrollableSegmentedControl) {
         serverRequest.isLoading = true
         
         performHTTPSRequest()
@@ -38,7 +39,7 @@ class MainMenuViewController: UIViewController {
         
         tableView.reloadData()
     }
-    
+
 // MARK: - Methods
     //View Life Cycle
     override func viewDidLoad() {
@@ -46,6 +47,10 @@ class MainMenuViewController: UIViewController {
         
         configureTableView()
         
+        segmentedControl.setItems(ServerRequest.Category.all)
+        segmentedControl.buttonMargin = 30
+        segmentedControl.buttonPadding = 40
+        segmentedControl.font = UIFont(name: "Georgia", size: 15)
         segmentedControl.selectedSegmentIndex = UserDefaults.standard.integer(forKey: segmentedControlIndexKey)
         
         performHTTPSRequest()
@@ -105,7 +110,6 @@ class MainMenuViewController: UIViewController {
     // Private
     private func configureTableView() {
         tableView.rowHeight = 140
-        tableView.contentInset = UIEdgeInsetsMake(64, 0, 44, 0)
         
         var cellNib = UINib(nibName: "NewsCell", bundle: nil)
         tableView.register(cellNib, forCellReuseIdentifier: "NewsCell")

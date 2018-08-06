@@ -36,6 +36,7 @@
 		2EDCE73520B2C9E700A50C60 /* EntryAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDCE73420B2C9E700A50C60 /* EntryAnimationController.swift */; };
 		2EDCE73720B2D16D00A50C60 /* TransparentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDCE73620B2D16D00A50C60 /* TransparentView.swift */; };
 		2EDCE73920B2EE1200A50C60 /* ClosingAnimationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EDCE73820B2EE1200A50C60 /* ClosingAnimationController.swift */; };
+		2EE9A464210B3CFC0066E0D1 /* ScrollableSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EE9A463210B3CFC0066E0D1 /* ScrollableSegmentedControl.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +71,7 @@
 		2EDCE73420B2C9E700A50C60 /* EntryAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryAnimationController.swift; sourceTree = "<group>"; };
 		2EDCE73620B2D16D00A50C60 /* TransparentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransparentView.swift; sourceTree = "<group>"; };
 		2EDCE73820B2EE1200A50C60 /* ClosingAnimationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClosingAnimationController.swift; sourceTree = "<group>"; };
+		2EE9A463210B3CFC0066E0D1 /* ScrollableSegmentedControl.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScrollableSegmentedControl.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -196,6 +198,7 @@
 			children = (
 				2E4B994920E4C0EC00E559CE /* HudView.swift */,
 				2EDCE73620B2D16D00A50C60 /* TransparentView.swift */,
+				2EE9A463210B3CFC0066E0D1 /* ScrollableSegmentedControl.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -297,6 +300,7 @@
 				2E63CFE020F3CF0D0043A8A7 /* UIFont+Georgia.swift in Sources */,
 				2E8A4A0020BBD86200E03F72 /* ArchiveTableViewController.swift in Sources */,
 				2EDCE73220B06E7F00A50C60 /* PresentationController.swift in Sources */,
+				2EE9A464210B3CFC0066E0D1 /* ScrollableSegmentedControl.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

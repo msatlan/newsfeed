@@ -15,18 +15,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     lazy var coreDataStack = CoreDataStack(modelName: "NewsFeed")
     
-    func customizeAppearance() {
-        UIApplication.shared.statusBarStyle = .lightContent
-        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.font: UIFont.georgia(ofSize: 15)], for: .normal)
-        UINavigationBar.appearance().barTintColor = UIColor(red: 33/255, green: 33/255, blue: 33/255, alpha: 1.0)
-        UINavigationBar.appearance().tintColor = UIColor(red: 255/255, green: 238/255, blue: 136/255, alpha: 1.0)
-        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.font: UIFont.georgia(ofSize: 20),
-                                                            NSAttributedStringKey.foregroundColor: UIColor.white]
-        UINavigationBar.appearance().isTranslucent = false
-        
-        // removes UITableViewCell white flickering on deletion
-        UITableViewCell.appearance().backgroundColor = .clear
-    }
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
@@ -47,6 +35,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    func customizeAppearance() {
+        UIApplication.shared.statusBarStyle = .lightContent
+        UIBarButtonItem.appearance().setTitleTextAttributes([NSAttributedStringKey.font: UIFont.georgia(ofSize: 15)], for: .normal)
+        UINavigationBar.appearance().barTintColor = UIColor(red: 33/255, green: 33/255, blue: 33/255, alpha: 1.0)
+        UINavigationBar.appearance().tintColor = UIColor(red: 255/255, green: 238/255, blue: 136/255, alpha: 1.0)
+        UINavigationBar.appearance().titleTextAttributes = [NSAttributedStringKey.font: UIFont.georgia(ofSize: 20),
+                                                            NSAttributedStringKey.foregroundColor: UIColor.white]
+        UINavigationBar.appearance().isTranslucent = false
+        
+        // removes UITableViewCell white flickering on deletion
+        UITableViewCell.appearance().backgroundColor = .clear
+    }
+    
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
