@@ -30,7 +30,7 @@ class ScrollableSegmentedControl: UIControl {
     open var selectedSegmentIndex: Int = -1 {
         didSet {
             highlightSelectedSegment()
-            calculateAndSetScrollOffset()
+            setScrollOffset()
       
             // deselect previous button if different button is tapped
             if oldValue != selectedSegmentIndex {
@@ -86,7 +86,7 @@ class ScrollableSegmentedControl: UIControl {
         
         updateUI()
         highlightSelectedSegment()
-        calculateAndSetScrollOffset()
+        setScrollOffset()
     }
     
     // Action methods
@@ -178,41 +178,20 @@ class ScrollableSegmentedControl: UIControl {
         }
     }
 
-    private func calculateAndSetScrollOffset() {
-        var scrollOffset: CGFloat = 0
-        let selectedButton: UIButton? = buttonsArray.filter{$0.tag == selectedSegmentIndex}.first
-  
-        guard let button = selectedButton else { return scrollOffset = 0 }
+    private func setScrollOffset() {
+        guard scrollView.contentSize.width > scrollView.frame.width,
+              let selectedButton = (buttonsArray.filter{$0.tag == selectedSegmentIndex}.first) else { return }
         
-        let amountToScroll: CGFloat = center.x - button.center.x
+        var scrollOffset: CGFloat = selectedButton.center.x - center.x
+        let minOffset: CGFloat = 0
+        let maxOffset: CGFloat = scrollView.contentSize.width - frame.size.width
         
-        // 1. if content size is <= than frame size width; no need for scrolling (i.e. 2 or 3 buttons)
-        if scrollView.contentSize.width <= frame.size.width {
-            scrollOffset = 0
-        } else {
-            // 2. needs to scroll to button
-            // 2.1. scroll with negative value
-            if button.center.x <= center.x {
-                scrollOffset = -amountToScroll
-                // 2.1.1. pin scroll view offset to container view margin left hand side to avoid scrolling beyond scroll view content size
-                if scrollOffset <= 0 {
-                    scrollOffset = 0
-                } else {
-                    // 2.1.2. scroll to button
-                    scrollOffset = -amountToScroll
-                }
-            } else {
-                // 2.2. scroll with positive value
-                scrollOffset = abs(amountToScroll)
-                // 2.2.1. pin scroll view offset to container view margin right hand side avoid scrolling beyond scroll view content size
-                if scrollOffset >= scrollView.contentSize.width - frame.size.width {
-                    scrollOffset = scrollView.contentSize.width - frame.size.width
-                } else {
-                    // 2.2.2. scroll to button
-                    scrollOffset = abs(amountToScroll)
-                }
-            }
-        }
+        if scrollOffset <= minOffset {
+            scrollOffset = minOffset
+        } else if scrollOffset > maxOffset {
+            scrollOffset = maxOffset
+        } 
+ 
         scrollView.setContentOffset(CGPoint(x: scrollOffset, y: 0), animated: true)
     }
 }
