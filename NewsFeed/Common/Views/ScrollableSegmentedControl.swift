@@ -34,8 +34,7 @@ class ScrollableSegmentedControl: UIControl {
       
             // deselect previous button if different button is tapped
             if oldValue != selectedSegmentIndex {
-                let button = buttonsArray.filter{$0.tag == oldValue}.first
-                if let previousButton = button {
+                if let previousButton = (buttonsArray.filter{$0.tag == oldValue}.first) {
                     previousButton.isSelected = false
                     UIButton.animate(withDuration: 0.3, animations: {
                         previousButton.transform = CGAffineTransform.identity
@@ -49,6 +48,7 @@ class ScrollableSegmentedControl: UIControl {
     private var buttonTitles: [String] = []
     private var buttonsArray: [UIButton] = []
     private let scrollView = UIScrollView()
+    private let separatorLine = UIView()
     
 // MARK: - Methods
     // Init
@@ -56,7 +56,6 @@ class ScrollableSegmentedControl: UIControl {
         super.init(coder: aDecoder)
         
         setUp()
-        drawSeparatorLine()
     }
     
     public init(items: [String]) {
@@ -66,7 +65,6 @@ class ScrollableSegmentedControl: UIControl {
         
         setUp()
         createButtons()
-        drawSeparatorLine()
     }
     
     public func setItems(_ items: [String]) {
@@ -81,6 +79,11 @@ class ScrollableSegmentedControl: UIControl {
         
         scrollView.frame = bounds
         
+        separatorLine.frame = CGRect(x: 0,
+                                     y: frame.size.height - 1,
+                                     width: frame.size.width,
+                                     height: 1)
+        
         updateUI()
         highlightSelectedSegment()
         calculateAndSetScrollOffset()
@@ -88,11 +91,7 @@ class ScrollableSegmentedControl: UIControl {
     
     // Action methods
     @objc private func buttonTapped(_ sender: UIButton) {
-        let button = buttonsArray.filter{$0.tag == selectedSegmentIndex}.first
-        
-        selectedSegmentIndex = sender.tag
-        
-        if let previousButton = button {
+        if let previousButton = (buttonsArray.filter{$0.tag == selectedSegmentIndex}.first) {
             if previousButton.tag != sender.tag {
                 sendActions(for: .valueChanged)
                 previousButton.isSelected = false
@@ -102,6 +101,8 @@ class ScrollableSegmentedControl: UIControl {
             }
         }
         
+        selectedSegmentIndex = sender.tag
+        
         sender.isSelected = true
     }
     
@@ -110,6 +111,7 @@ class ScrollableSegmentedControl: UIControl {
     private func setUp() {
         scrollView.showsHorizontalScrollIndicator = false
         addSubview(scrollView)
+        drawSeparatorLine()
     }
     
     // Create buttons
@@ -137,7 +139,6 @@ class ScrollableSegmentedControl: UIControl {
     
     private func updateUI() {
         var buttonX: CGFloat = buttonMargin
-        var contentSizeWidth: CGFloat = 0
         
         // Set button frame
         for button in buttonsArray {
@@ -152,11 +153,9 @@ class ScrollableSegmentedControl: UIControl {
                                   height: scrollView.frame.size.height)
             
             buttonX += button.frame.size.width + buttonSpacing
-            
-            contentSizeWidth += button.frame.size.width
         }
         
-        scrollView.contentSize.width = buttonX
+        scrollView.contentSize.width = buttonX - buttonSpacing + buttonMargin
     }
     
     func calculateButtonSize(title: String, fontAttributes: [NSAttributedStringKey : Any]) -> CGSize {
@@ -165,22 +164,13 @@ class ScrollableSegmentedControl: UIControl {
     
     // Draw separator line
     private func drawSeparatorLine() {
-        let separatorHeight: CGFloat = 1
-
-        let separator = UIView(frame: CGRect(x: 0,
-                                             y: frame.size.height - separatorHeight,
-                                             width: frame.size.width,
-                                             height: separatorHeight))
-        
-        separator.backgroundColor = UIColor.lightGray
+        separatorLine.backgroundColor = UIColor.lightGray
  
-        addSubview(separator)
+        addSubview(separatorLine)
     }
     
     private func highlightSelectedSegment() {
-        let segment = buttonsArray.filter{$0.tag == selectedSegmentIndex}.first
-
-        if let selectedSegment = segment {
+        if let selectedSegment = (buttonsArray.filter{$0.tag == selectedSegmentIndex}.first) {
             selectedSegment.isSelected = true
             UIButton.animate(withDuration: 0.3, animations: {
                 selectedSegment.transform = CGAffineTransform(scaleX: 1.4, y: 1.4)
