@@ -91,17 +91,18 @@ class ScrollableSegmentedControl: UIControl {
     
     // Action methods
     @objc private func buttonTapped(_ sender: UIButton) {
+        selectedSegmentIndex = sender.tag
+        
+        sendActions(for: .valueChanged)
+        
         if let previousButton = (buttonsArray.filter{$0.tag == selectedSegmentIndex}.first) {
             if previousButton.tag != sender.tag {
-                sendActions(for: .valueChanged)
                 previousButton.isSelected = false
                 UIButton.animate(withDuration: 0.3, animations: {
                     previousButton.transform = CGAffineTransform.identity
                 })
             }
         }
-        
-        selectedSegmentIndex = sender.tag
         
         sender.isSelected = true
     }
