@@ -13,6 +13,6 @@ Some of the app's features can be seen below:
 
 
 * Adding articles to the archive:
-<img src="https://res.cloudinary.com/msatlan/image/upload/v1535977288/newsFeedDemo3.gif">
+<img src="https://res.cloudinary.com/msatlan/image/upload/v1535977653/newsFeedDemo3.gif">
 
 
