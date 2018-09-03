@@ -8,7 +8,6 @@ Some of the app's features can be seen below:
 * Browsing news articles by categories:
 <img src="https://res.cloudinary.com/msatlan/image/upload/v1535961565/NewsFeedGif/newsFeedDemo1.gif">
 
-
 * Changing the articles language and sources by country:
 <img src="https://res.cloudinary.com/msatlan/image/upload/v1535961563/NewsFeedGif/newsFeedDemo2.gif">
 
