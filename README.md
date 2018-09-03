@@ -9,10 +9,10 @@ Some of the app's features can be seen below:
 <img src="https://res.cloudinary.com/msatlan/image/upload/v1535961565/NewsFeedGif/newsFeedDemo1.gif">
 
 * Changing the articles language and sources by country:
-<img src="https://res.cloudinary.com/msatlan/image/upload/v1535961563/NewsFeedGif/newsFeedDemo2.gif">
+<img src="https://res.cloudinary.com/msatlan/image/upload/v1535977288/newsFeedDemo2.gif">
 
 
 * Adding articles to the archive:
-<img src="https://res.cloudinary.com/msatlan/image/upload/v1535961563/NewsFeedGif/newsFeedDemo3.gif">
+<img src="https://res.cloudinary.com/msatlan/image/upload/v1535977288/newsFeedDemo3.gif">
 
 
