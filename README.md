@@ -3,6 +3,8 @@ NewsFeed demo iOS application
 
 NewsFeed app fetches data in form of news articles from server and presents them to the user. The articles are sorted by language and categories. Articles can also be stored in archive for later use.   
 
+The app also presents a custom UI control - scrollable segmented control.
+
 Some of the app's features can be seen below: 
 
 * Browsing news articles by categories:
